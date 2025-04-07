@@ -27,7 +27,6 @@ def list_tasks():
         return
     for idx, task in enumerate(tasks, start=1):
         status = "Done" if task["done"] else "Not Done"
-
         print(f"{idx}. {task['title']} - {status}")
 
 def mark_task_done():
@@ -44,12 +43,27 @@ def mark_task_done():
     except ValueError:
         print("Please enter a valid number.")
 
+def delete_task():
+    tasks = load_tasks()
+    list_tasks()
+    try:
+        task_no = int(input("Enter task number to delete: "))
+        if 1 <= task_no <= len(tasks):
+            removed = tasks.pop(task_no - 1)
+            save_tasks(tasks)
+            print(f"Deleted: {removed['title']}")
+        else:
+            print("Invalid task number.")
+    except ValueError:
+        print("Please enter a valid number.")
+
 def main():
     while True:
         print("\n1. Add Task")
         print("2. List Tasks")
         print("3. Mark Task as Done")
-        print("4. Exit")
+        print("4. Delete Task")
+        print("5. Exit")
 
         choice = input("Choose an option: ")
 
@@ -60,6 +74,8 @@ def main():
         elif choice == '3':
             mark_task_done()
         elif choice == '4':
+            delete_task()
+        elif choice == '5':
             break
         else:
             print("Invalid choice. Try again.")
